@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Анастасия Босенко](https://up.htmlacademy.ru/javascript/24/user/1649659).
-* Наставник: [Евгений Фаллер] (https://htmlacademy.ru/profile/id505933).
+* Наставник: [Евгений Фаллер](https://htmlacademy.ru/profile/id505933).
 
 ---
 
