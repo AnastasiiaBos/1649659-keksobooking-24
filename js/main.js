@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 function getRandomInt (min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -107,5 +108,5 @@ const advert = function () {
   };
 };
 
+// eslint-disable-next-line no-unused-vars
 const advertArray = Array.from({length: 10}, advert);
-console.log (advertArray);
