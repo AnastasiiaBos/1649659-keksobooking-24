@@ -26,7 +26,7 @@ const LATITUDE_MAX = 35.70000;
 const LONGITUDE_MIN = 139.70000;
 const LONGITUDE_MAX = 139.80000;
 
-const TITLE = [
+const TITLES = [
   'Свободная квартира!',
   'Лучшее жилье для Вас',
   'Именно то, что Вы давно искали',
@@ -34,7 +34,7 @@ const TITLE = [
   'Срочно!',
 ];
 
-const TYPE = [
+const TYPES = [
   'palace',
   'flat',
   'house',
@@ -42,7 +42,7 @@ const TYPE = [
   'hotel',
 ];
 
-const CHECKIN_OUT = [
+const CHECKIN_CHEKOUT = [
   '12:00',
   '13:00',
   '14:00',
@@ -57,7 +57,7 @@ const FEATURES = [
   'conditioner',
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Прекрасное жилье для платежеспособных арендаторов.',
   'Удобная, комфортная квартира, полностью меблированная, с новой техникой.',
   'Светлая уютная квартирка для настоящих ценителей комфорта.',
@@ -69,19 +69,33 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const getRandomArrayElement = function (element) {
-  return element[getRandomInt(0, element.length - 1)];
+const getRandomArrayElement = function (array) {
+  return array[getRandomInt(0, array.length - 1)];
 };
 
-const getRandomAvatarNumber = function () {
-  const randomAvatarNumber = getRandomInt(1, 10);
-  if (randomAvatarNumber < 10) {
-    return '0' + randomAvatarNumber;
+const getRandomArray = function (initialArray) {
+  const initialArrayCopy = initialArray.slice();
+  const randomArray = [];
+  const randomArrayLength = getRandomInt(1, initialArray.length);
+
+  while (randomArray.length < randomArrayLength) {
+    const randomArrayElementIndex = getRandomInt(0, initialArrayCopy.length - 1);
+    const randomArrayElement = initialArrayCopy[randomArrayElementIndex];
+    initialArrayCopy.splice(randomArrayElementIndex, 1);
+    randomArray.push(randomArrayElement);
   }
-  return randomAvatarNumber;
+
+  return randomArray;
 };
 
-const advert = function () {
+const createAvatarNumber = function (avatarNumber) {
+  if (avatarNumber < 10) {
+    return '0' + avatarNumber;
+  }
+  return avatarNumber;
+};
+
+const createAdvert = function (sequenceNumber) {
   const location = {
     lat: getRandomFloat(LATITUDE_MIN, LATITUDE_MAX, 5),
     lng: getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, 5),
@@ -89,24 +103,24 @@ const advert = function () {
 
   return {
     author: {
-      avatar: 'img/avatars/user' + getRandomAvatarNumber() + '.png',
+      avatar: `img/avatars/user${createAvatarNumber(sequenceNumber + 1)}.png`,
     },
     offer: {
-      title: getRandomArrayElement(TITLE),
-      address: location.lat + ', ' + location.lng,
+      title: getRandomArrayElement(TITLES),
+      address: `${location.lat}, ${location.lng}`,
       price: getRandomInt(PRICE_MIN, PRICE_MAX),
-      type: getRandomArrayElement(TYPE),
+      type: getRandomArrayElement(TYPES),
       rooms: getRandomInt(1, ROOM_MAX),
       guests: getRandomInt(1, GUESTS_MAX),
-      checkin: getRandomArrayElement(CHECKIN_OUT),
-      checkout: getRandomArrayElement(CHECKIN_OUT),
-      features: getRandomArrayElement(FEATURES),
-      description: getRandomArrayElement(DESCRIPTION),
-      photos: getRandomArrayElement(PHOTOS),
+      checkin: getRandomArrayElement(CHECKIN_CHEKOUT),
+      checkout: getRandomArrayElement(CHECKIN_CHEKOUT),
+      features: getRandomArray(FEATURES),
+      description: getRandomArrayElement(DESCRIPTIONS),
+      photos: getRandomArray(PHOTOS),
     },
     location: location,
   };
 };
 
 // eslint-disable-next-line no-unused-vars
-const advertArray = Array.from({length: 10}, advert);
+const advertArray = Array.from({length: 10}, (item, idx) => createAdvert(idx));
