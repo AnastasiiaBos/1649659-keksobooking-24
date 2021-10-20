@@ -1,3 +1,3 @@
-import {advertArray} from './data.js';
+import {addAdvert} from './advert.js';
 
-advertArray();
+addAdvert();

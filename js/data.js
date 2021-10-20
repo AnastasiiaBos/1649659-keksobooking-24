@@ -52,7 +52,7 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const createAdvert = function (sequenceNumber) {
+const createAdvert = function () {
   const location = {
     lat: getRandomFloat(LATITUDE_MIN, LATITUDE_MAX, 5),
     lng: getRandomFloat(LONGITUDE_MIN, LONGITUDE_MAX, 5),
@@ -60,7 +60,7 @@ const createAdvert = function (sequenceNumber) {
 
   return {
     author: {
-      avatar: `img/avatars/user${createAvatarNumber(sequenceNumber + 1)}.png`,
+      avatar: `img/avatars/user${createAvatarNumber(getRandomInt(1, 9))}.png`,
     },
     offer: {
       title: getRandomArrayElement(TITLES),
@@ -80,8 +80,7 @@ const createAdvert = function (sequenceNumber) {
 };
 
 // eslint-disable-next-line no-unused-vars
-function advertArray() {
-  return Array.from({length: 10}, (item, index) => createAdvert(index));
-}
+const  createAdverts = () => Array.from({length: 1}, (item, index) => createAdvert(index));
 
-export {advertArray};
+
+export {createAdverts};
