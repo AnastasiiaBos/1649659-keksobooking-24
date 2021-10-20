@@ -20,29 +20,38 @@ similarAdverts.forEach(({author, offer}) => {
 
   // Features
   const advertFeatures = offer.features;
-  const popupFeaturesList = advertElement.querySelector('.popup__features').querySelectorAll('.popup__feature');
+  const popupFeaturesContainer = advertElement.querySelector('.popup__features');
+  const popupFeaturesList = popupFeaturesContainer.querySelectorAll('.popup__feature');
 
-  popupFeaturesList.forEach((popupFeaturesItem) => {
-    const isNecessary = advertFeatures.some(
-      (advertFeature) => popupFeaturesItem.classList.contains(`popup__feature--${advertFeature}`),
-    );
+  if (advertFeatures) {
+    popupFeaturesList.forEach((popupFeaturesItem) => {
+      const isNecessary = advertFeatures.some(
+        (advertFeature) => popupFeaturesItem.classList.contains(`popup__feature--${advertFeature}`),
+      );
 
-    if (!isNecessary) {
-      popupFeaturesItem.remove();
-    }
-  });
+      if (!isNecessary) {
+        popupFeaturesItem.remove();
+      }
+    });
+  } else {
+    popupFeaturesContainer.classList.add('hidden');
+  }
 
   // Photos
   const advertPhotos = offer.photos;
   const popupPhotosContainer = advertElement.querySelector('.popup__photos');
   const popupPhotosList = popupPhotosContainer.querySelector('.popup__photo');
 
-  advertPhotos.forEach((advertPhoto) => {
-    const popupPhotosListClone = popupPhotosList.cloneNode(true);
-    popupPhotosListClone.src = advertPhoto;
-    popupPhotosContainer.appendChild(popupPhotosListClone);
-    popupPhotosList.remove();
-  });
+  if (advertPhotos) {
+    advertPhotos.forEach((advertPhoto) => {
+      const popupPhotosListClone = popupPhotosList.cloneNode(true);
+      popupPhotosListClone.src = advertPhoto;
+      popupPhotosContainer.appendChild(popupPhotosListClone);
+      popupPhotosList.remove();
+    });
+  } else {
+    popupPhotosContainer.classList.add('hidden');
+  }
 
   // Проверяем, есть ли данные для заполнения (textContent)
   const addTextContentIfExists = function (content, classAdvert) {
@@ -94,6 +103,6 @@ similarAdverts.forEach(({author, offer}) => {
   advertFragment.appendChild(advertElement);
 });
 
-const advertGenerate = () => advertInsertBlock.appendChild(advertFragment);
+const addAdvert = () => advertInsertBlock.appendChild(advertFragment);
 
-export {advertGenerate};
+export {addAdvert};

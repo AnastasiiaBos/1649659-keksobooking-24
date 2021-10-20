@@ -1,3 +1,3 @@
-import {advertGenerate} from './popup.js';
+import {addAdvert} from './advert.js';
 
-advertGenerate();
+addAdvert();
