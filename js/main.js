@@ -1,3 +1,3 @@
 import {addAdvert} from './advert.js';
 
-addAdvert();
+addAdvert(0);

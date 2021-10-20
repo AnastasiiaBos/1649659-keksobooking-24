@@ -14,9 +14,9 @@ const TYPES_OF_HOUSES = {
 const similarAdverts = createAdverts();
 const advertFragment = document.createDocumentFragment();
 
-
-similarAdverts.forEach(({author, offer}) => {
+const renderAdvert = function ({author, offer}) {
   const advertElement = advertTemplate.cloneNode(true);
+  const hideElement = (className) => advertElement.querySelector(className).classList.add('hidden');
 
   // Features
   const advertFeatures = offer.features;
@@ -34,7 +34,7 @@ similarAdverts.forEach(({author, offer}) => {
       }
     });
   } else {
-    popupFeaturesContainer.classList.add('hidden');
+    hideElement('.popup__features');
   }
 
   // Photos
@@ -50,7 +50,7 @@ similarAdverts.forEach(({author, offer}) => {
       popupPhotosList.remove();
     });
   } else {
-    popupPhotosContainer.classList.add('hidden');
+    hideElement('.popup__photos');
   }
 
   // Проверяем, есть ли данные для заполнения (textContent)
@@ -58,7 +58,7 @@ similarAdverts.forEach(({author, offer}) => {
     if (content) {
       advertElement.querySelector(classAdvert).textContent = content;
     } else {
-      advertElement.querySelector(classAdvert).classList.add('hidden');
+      hideElement(classAdvert);
     }
   };
 
@@ -72,19 +72,19 @@ similarAdverts.forEach(({author, offer}) => {
   if (offer.price) {
     advertElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
   } else {
-    advertElement.querySelector('.popup__text--price').classList.add('hidden');
+    hideElement('.popup__text--price');
   }
 
   if (offer.rooms && offer.guests) {
     advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   } else {
-    advertElement.querySelector('.popup__text--capacity').classList.add('hidden');
+    hideElement('.popup__text--capacity');
   }
 
-  if (offer.rooms && offer.guests) {
+  if (offer.checkin && offer.checkout) {
     advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   } else {
-    advertElement.querySelector('.popup__text--time').classList.add('hidden');
+    hideElement('.popup__text--time');
   }
 
   // Проверяем, есть ли данные для заполнения (src)
@@ -92,17 +92,19 @@ similarAdverts.forEach(({author, offer}) => {
     if (content) {
       advertElement.querySelector(classAdvert).src = content;
     } else {
-      advertElement.querySelector(classAdvert).classList.add('hidden');
+      hideElement(classAdvert);
     }
   };
 
   // avatar
   addSrcIfExists(author.avatar, '.popup__avatar');
 
-
   advertFragment.appendChild(advertElement);
-});
+};
 
-const addAdvert = () => advertInsertBlock.appendChild(advertFragment);
+const addAdvert = (index) => {
+  renderAdvert(similarAdverts[index]);
+  advertInsertBlock.appendChild(advertFragment);
+};
 
 export {addAdvert};
