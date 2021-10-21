@@ -80,7 +80,7 @@ const createAdvert = function () {
 };
 
 // eslint-disable-next-line no-unused-vars
-const  createAdverts = () => Array.from({length: 1}, (item, index) => createAdvert(index));
+const  createAdverts = () => Array.from({length: 10}, (item, index) => createAdvert(index));
 
 
 export {createAdverts};
