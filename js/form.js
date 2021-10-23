@@ -27,5 +27,4 @@ const activateForm = function () {
   });
 };
 
-export {activateForm};
-export {deactivateForm};
+export {activateForm, deactivateForm};
