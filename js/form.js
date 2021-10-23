@@ -3,7 +3,7 @@ const fieldsets = form.querySelectorAll('fieldset');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelectorAll('.map__filter');
 
-const diactivateForm = function () {
+const deactivateForm = function () {
   form.classList.add('ad-form--disabled');
   fieldsets.forEach((fieldest) => {
     fieldest.disabled = true;
@@ -28,4 +28,4 @@ const activateForm = function () {
 };
 
 export {activateForm};
-export {diactivateForm};
+export {deactivateForm};

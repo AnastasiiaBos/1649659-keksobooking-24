@@ -1,7 +1,7 @@
 import {addAdvert} from './advert.js';
-import {diactivateForm} from './form.js';
-// import {activateForm} from './form.js';
+// import {deactivateForm} from './form.js';
+import {activateForm} from './form.js';
 
 addAdvert(0);
-// activateForm();
-diactivateForm();
+activateForm();
+// deactivateForm();
