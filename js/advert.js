@@ -102,12 +102,10 @@ const renderAdvert = function ({author, offer}) {
 
 
   advertFragment.appendChild(advertElement);
-};
-
-const addAdvert = (index) => {
-  renderAdvert(similarAdverts[index]);
   advertInsertBlock.appendChild(advertFragment);
 };
+
+const addAdvert = (index) => renderAdvert(similarAdverts[index]);
 
 
 export {addAdvert};
