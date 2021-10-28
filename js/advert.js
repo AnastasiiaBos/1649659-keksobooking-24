@@ -1,6 +1,6 @@
-import {createAdverts} from './data.js';
+// import {createAdverts} from './data.js';
 
-const advertInsertBlock = document.querySelector('.map__canvas');
+// const advertInsertBlock = document.querySelector('.map__canvas');
 const advertTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const TYPES_OF_HOUSES = {
@@ -11,8 +11,8 @@ const TYPES_OF_HOUSES = {
   hotel: 'Отель',
 };
 
-const similarAdverts = createAdverts();
-const advertFragment = document.createDocumentFragment();
+// const similarAdverts = createAdverts();
+// const advertFragment = document.createDocumentFragment();
 
 
 const renderAdvert = function ({author, offer}) {
@@ -100,12 +100,10 @@ const renderAdvert = function ({author, offer}) {
   // avatar
   addSrcIfExists(author.avatar, '.popup__avatar');
 
-
-  advertFragment.appendChild(advertElement);
-  advertInsertBlock.appendChild(advertFragment);
+  return advertElement;
+  // advertFragment.appendChild(advertElement);
+  // advertInsertBlock.appendChild(advertFragment);
 };
 
-const addAdvert = (index) => renderAdvert(similarAdverts[index]);
-
-
-export {addAdvert};
+// const addAdvert = (index) => renderAdvert(similarAdverts[index]);
+export {renderAdvert};

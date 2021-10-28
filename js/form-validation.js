@@ -2,7 +2,7 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
-const CORRESPONDENCE_HOUSES_TO_MINPRICES = {
+const ACCORDANCE_HOUSES_TO_MINPRICES = {
   palace: 10000,
   flat: 1000,
   house: 5000,
@@ -10,7 +10,7 @@ const CORRESPONDENCE_HOUSES_TO_MINPRICES = {
   hotel: 3000,
 };
 
-const CORRESPONDENCE_ROOMS_TO_GUESTS = {
+const ACCORDANCE_ROOMS_TO_GUESTS = {
   '1': ['1'],
   '2': ['1', '2'],
   '3': ['1', '2', '3'],
@@ -42,8 +42,8 @@ title.addEventListener('input', () => {
 
 // Type of houses
 type.addEventListener('change', () => {
-  price.placeholder = CORRESPONDENCE_HOUSES_TO_MINPRICES[type.value];
-  price.min = CORRESPONDENCE_HOUSES_TO_MINPRICES[type.value];
+  price.placeholder = ACCORDANCE_HOUSES_TO_MINPRICES[type.value];
+  price.min = ACCORDANCE_HOUSES_TO_MINPRICES[type.value];
 });
 
 // Price
@@ -71,7 +71,7 @@ checkOut.addEventListener('change', () => {
 
 // Rooms and guests
 const isRoomCorrespondToGuests = function() {
-  return CORRESPONDENCE_ROOMS_TO_GUESTS[rooms.value].indexOf(guests.value) === -1;
+  return ACCORDANCE_ROOMS_TO_GUESTS[rooms.value].indexOf(guests.value) === -1;
 };
 
 const isValid = function(input, message) {
@@ -92,8 +92,8 @@ submit.addEventListener('click', (evt) => {
     title.setCustomValidity('Заголовок объявления не может быть пустым');
   } else if (!price.value) {
     price.setCustomValidity('Поле с ценой не может быть пустым');
-  } else if (price.value < CORRESPONDENCE_HOUSES_TO_MINPRICES[type.value]) {
-    price.setCustomValidity(`Введённое значение не может быть меньше ${CORRESPONDENCE_HOUSES_TO_MINPRICES[type.value]} руб.`);
+  } else if (price.value < ACCORDANCE_HOUSES_TO_MINPRICES[type.value]) {
+    price.setCustomValidity(`Введённое значение не может быть меньше ${ACCORDANCE_HOUSES_TO_MINPRICES[type.value]} руб.`);
   } else if (isRoomCorrespondToGuests()) {
     evt.preventDefault();
     rooms.setCustomValidity('Номер не вмещает выбранное количество гостей');
