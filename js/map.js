@@ -1,5 +1,6 @@
 import {activateForm, deactivateForm} from './form.js';
 import {renderAdvert} from './advert.js';
+import {showAlert} from './utils.js';
 import {getData} from './api.js';
 
 const TOKYO_LATITUDE = 35.68034507280568;
@@ -72,4 +73,4 @@ const pinAdverts = function (adverts) {
   });
 };
 
-getData(pinAdverts);
+getData(pinAdverts, () => showAlert('Ошибка запроса!'));

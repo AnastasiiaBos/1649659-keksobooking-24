@@ -1,3 +1,6 @@
+import {sendData} from './api.js';
+import {showAlert} from './utils.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
@@ -105,4 +108,19 @@ submit.addEventListener('click', (evt) => {
   title.reportValidity();
   price.reportValidity();
   rooms.reportValidity();
+});
+
+const onSuccess = function(message) {
+  console.log(message);
+};
+
+
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  sendData(
+    () => onSuccess('success'),
+    () => showAlert('Не удалось отправить форму. Попробуйте ещё раз'),
+    new FormData(evt.target),
+  );
 });
