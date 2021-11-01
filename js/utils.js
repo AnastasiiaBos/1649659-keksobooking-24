@@ -1,46 +1,25 @@
-function getRandomInt (min, max) {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+const ALERT_SHOW_TIME = 5000;
 
-  const result = Math.random() * (upper - lower + 1) + lower;
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 100;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+  alertContainer.style.color = 'white';
 
-  return Math.floor(result);
-}
+  alertContainer.textContent = message;
 
-function getRandomFloat (min, max, digits) {
-  const lower = Math.min(Math.abs(min), Math.abs(max));
-  const upper = Math.max(Math.abs(min), Math.abs(max));
+  document.body.append(alertContainer);
 
-  const result = Math.random() * (upper - lower) + lower;
-
-  return result.toFixed(digits);
-}
-
-const getRandomArrayElement = function (array) {
-  return array[getRandomInt(0, array.length - 1)];
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
 };
 
-const getRandomArray = function (initialArray) {
-  const initialArrayCopy = initialArray.slice();
-  const randomArray = [];
-  const randomArrayLength = getRandomInt(1, initialArray.length);
-
-  while (randomArray.length < randomArrayLength) {
-    const randomArrayElementIndex = getRandomInt(0, initialArrayCopy.length - 1);
-    const randomArrayElement = initialArrayCopy[randomArrayElementIndex];
-    initialArrayCopy.splice(randomArrayElementIndex, 1);
-    randomArray.push(randomArrayElement);
-  }
-
-  return randomArray;
-};
-
-const createAvatarNumber = function (avatarNumber) {
-  if (avatarNumber < 10) {
-    return `0${avatarNumber}`;
-  }
-
-  return avatarNumber;
-};
-
-export {getRandomInt, getRandomFloat, getRandomArrayElement, getRandomArray, createAvatarNumber};
+export {showAlert};

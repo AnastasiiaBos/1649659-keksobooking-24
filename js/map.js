@@ -1,12 +1,10 @@
 import {activateForm, deactivateForm} from './form.js';
-import {createAdverts} from './data.js';
 import {renderAdvert} from './advert.js';
-
+import {getData} from './api.js';
 
 const TOKYO_LATITUDE = 35.68034507280568;
 const TOKYO_LONGITUDE = 139.76785003796047;
 const address = document.querySelector('#address');
-const advertArray = createAdverts();
 
 deactivateForm();
 
@@ -50,24 +48,28 @@ mainMarker.on('moveend', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-advertArray.forEach((advert) => {
-  const icon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+const pinAdverts = function (adverts) {
+  adverts.forEach((advert) => {
+    const icon = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+
+    const marker = L.marker(
+      {
+        lat: advert.location.lat,
+        lng: advert.location.lng,
+      },
+      {
+        icon,
+      },
+    );
+
+    marker
+      .addTo(map)
+      .bindPopup(renderAdvert(advert));
   });
+};
 
-  const marker = L.marker(
-    {
-      lat: advert.location.lat,
-      lng: advert.location.lng,
-    },
-    {
-      icon,
-    },
-  );
-
-  marker
-    .addTo(map)
-    .bindPopup(renderAdvert(advert));
-});
+getData(pinAdverts);
