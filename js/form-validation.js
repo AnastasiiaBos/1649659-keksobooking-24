@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
 import {showAlert} from './utils.js';
+import {resetMap} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -22,6 +23,7 @@ const ACCORDANCE_ROOMS_TO_GUESTS = {
 
 const form = document.querySelector('.ad-form');
 const title = form.querySelector('#title');
+// const address = form.querySelector('#address');
 const type = form.querySelector('#type');
 const price = form.querySelector('#price');
 const checkIn = form.querySelector('#timein');
@@ -29,6 +31,9 @@ const checkOut = form.querySelector('#timeout');
 const rooms = form.querySelector('#room_number');
 const guests = form.querySelector('#capacity');
 const submit = form.querySelector('.ad-form__submit');
+const reset = form.querySelector('.ad-form__reset');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+// const errorTemplate = document.querySelector('#error').content.querySelector('.error__message');
 
 // Title
 title.addEventListener('input', () => {
@@ -110,16 +115,39 @@ submit.addEventListener('click', (evt) => {
   rooms.reportValidity();
 });
 
-const onSuccess = function(message) {
-  console.log(message);
+// Reset button
+const resetComponent = function() {
+  form.reset();
+  resetMap();
 };
 
+reset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetComponent();
+});
+
+// Form is submitted
+const onSuccess = function() {
+  const successElement = successTemplate.cloneNode(true);
+  document.body.appendChild(successElement);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      successElement.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('click', () => {
+    successElement.classList.add('hidden');
+  });
+  resetComponent();
+};
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   sendData(
-    () => onSuccess('success'),
+    () => onSuccess(),
     () => showAlert('Не удалось отправить форму. Попробуйте ещё раз'),
     new FormData(evt.target),
   );

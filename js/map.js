@@ -3,9 +3,10 @@ import {renderAdvert} from './advert.js';
 import {showAlert} from './utils.js';
 import {getData} from './api.js';
 
+const address = document.querySelector('#address');
+
 const TOKYO_LATITUDE = 35.68034507280568;
 const TOKYO_LONGITUDE = 139.76785003796047;
-const address = document.querySelector('#address');
 
 deactivateForm();
 
@@ -17,7 +18,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: TOKYO_LATITUDE,
     lng: TOKYO_LONGITUDE,
-  }, 10);
+  }, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -49,7 +50,7 @@ mainMarker.on('moveend', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-const pinAdverts = function (adverts) {
+const showAdverts = function (adverts) {
   adverts.forEach((advert) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
@@ -73,4 +74,22 @@ const pinAdverts = function (adverts) {
   });
 };
 
-getData(pinAdverts, () => showAlert('Ошибка запроса!'));
+const resetMap = function () {
+  map.setView({
+    lat: TOKYO_LATITUDE,
+    lng: TOKYO_LONGITUDE,
+  }, 13);
+
+  map.closePopup();
+
+  mainMarker.setLatLng({
+    lat: TOKYO_LATITUDE,
+    lng: TOKYO_LONGITUDE,
+  });
+
+  address.value = `${TOKYO_LATITUDE.toFixed(5)}, ${TOKYO_LONGITUDE.toFixed(5)}`;
+};
+
+getData(showAdverts, () => showAlert('Ошибка запроса!'));
+
+export {resetMap};
