@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {showAlert} from './utils.js';
+// import {showAlert} from './utils.js';
 import {resetMap} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
@@ -23,7 +23,6 @@ const ACCORDANCE_ROOMS_TO_GUESTS = {
 
 const form = document.querySelector('.ad-form');
 const title = form.querySelector('#title');
-// const address = form.querySelector('#address');
 const type = form.querySelector('#type');
 const price = form.querySelector('#price');
 const checkIn = form.querySelector('#timein');
@@ -33,7 +32,8 @@ const guests = form.querySelector('#capacity');
 const submit = form.querySelector('.ad-form__submit');
 const reset = form.querySelector('.ad-form__reset');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
-// const errorTemplate = document.querySelector('#error').content.querySelector('.error__message');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const mapFilters = document.querySelector('.map__filters');
 
 // Title
 title.addEventListener('input', () => {
@@ -118,6 +118,7 @@ submit.addEventListener('click', (evt) => {
 // Reset button
 const resetComponent = function() {
   form.reset();
+  mapFilters.reset();
   resetMap();
 };
 
@@ -143,12 +144,33 @@ const onSuccess = function() {
   resetComponent();
 };
 
+// Form isn't submitted
+const onFail = function() {
+  const errorElement = errorTemplate.cloneNode(true);
+  const errorButton = errorElement.querySelector('.error__button');
+  document.body.appendChild(errorElement);
+
+  errorButton.addEventListener('click', () => {
+    errorElement.classList.add('hidden');
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      errorElement.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('click', () => {
+    errorElement.classList.add('hidden');
+  });
+};
+
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   sendData(
     () => onSuccess(),
-    () => showAlert('Не удалось отправить форму. Попробуйте ещё раз'),
+    () => onFail(),
     new FormData(evt.target),
   );
 });
