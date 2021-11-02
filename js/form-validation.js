@@ -1,3 +1,7 @@
+import {sendData} from './api.js';
+// import {showAlert} from './utils.js';
+import {resetMap} from './map.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
@@ -26,6 +30,10 @@ const checkOut = form.querySelector('#timeout');
 const rooms = form.querySelector('#room_number');
 const guests = form.querySelector('#capacity');
 const submit = form.querySelector('.ad-form__submit');
+const reset = form.querySelector('.ad-form__reset');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const mapFilters = document.querySelector('.map__filters');
 
 // Title
 title.addEventListener('input', () => {
@@ -105,4 +113,64 @@ submit.addEventListener('click', (evt) => {
   title.reportValidity();
   price.reportValidity();
   rooms.reportValidity();
+});
+
+// Reset button
+const resetComponent = function() {
+  form.reset();
+  mapFilters.reset();
+  resetMap();
+};
+
+reset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetComponent();
+});
+
+// Form is submitted
+const onSuccess = function() {
+  const successElement = successTemplate.cloneNode(true);
+  document.body.appendChild(successElement);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      successElement.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('click', () => {
+    successElement.classList.add('hidden');
+  });
+  resetComponent();
+};
+
+// Form isn't submitted
+const onFail = function() {
+  const errorElement = errorTemplate.cloneNode(true);
+  const errorButton = errorElement.querySelector('.error__button');
+  document.body.appendChild(errorElement);
+
+  errorButton.addEventListener('click', () => {
+    errorElement.classList.add('hidden');
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      errorElement.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('click', () => {
+    errorElement.classList.add('hidden');
+  });
+};
+
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  sendData(
+    () => onSuccess(),
+    () => onFail(),
+    new FormData(evt.target),
+  );
 });
