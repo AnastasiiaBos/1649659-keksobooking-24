@@ -1,4 +1,4 @@
-import {activateForm, deactivateForm} from './form.js';
+import {disableForm} from './form.js';
 import {renderAdvert} from './advert.js';
 import {showAlert} from './utils.js';
 import {getData} from './api.js';
@@ -8,11 +8,11 @@ const address = document.querySelector('#address');
 const TOKYO_LATITUDE = 35.68034507280568;
 const TOKYO_LONGITUDE = 139.76785003796047;
 
-deactivateForm();
+disableForm(true);
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    activateForm();
+    disableForm(false);
     address.value = `${TOKYO_LATITUDE.toFixed(5)}, ${TOKYO_LONGITUDE.toFixed(5)}`;
   })
   .setView({
