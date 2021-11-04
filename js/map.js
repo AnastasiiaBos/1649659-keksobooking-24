@@ -49,8 +49,21 @@ mainMarker.on('moveend', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-const showAdverts = function (adverts) {
-  adverts.forEach((advert) => {
+let originalAdverts = [];
+let filteredAdverts = [];
+
+export const getOriginalAdverts = () => originalAdverts;
+
+export const setFilteredAdverts = (adverts) => {
+  filteredAdverts = adverts;
+  console.log(filteredAdverts);
+};
+
+const markersGroup = L.layerGroup().addTo(map);
+
+export const drawAdverts = () => {
+  markersGroup.clearLayers();
+  filteredAdverts.forEach((advert) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
@@ -68,9 +81,15 @@ const showAdverts = function (adverts) {
     );
 
     marker
-      .addTo(map)
+      .addTo(markersGroup)
       .bindPopup(renderAdvert(advert));
   });
+};
+
+const showAdverts = function (adverts) {
+  originalAdverts = adverts;
+  setFilteredAdverts(originalAdverts.slice(0, 10));
+  drawAdverts();
   disableForm(false);
 };
 
