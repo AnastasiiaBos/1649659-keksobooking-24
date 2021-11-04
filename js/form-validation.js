@@ -1,6 +1,6 @@
 import {sendData} from './api.js';
-// import {showAlert} from './utils.js';
 import {resetMap} from './map.js';
+import {removeSuccessListeners, addSuccessListeners, addFailListeners, removeFailListeners, isEscape} from './utils.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -127,42 +127,47 @@ reset.addEventListener('click', (evt) => {
   resetComponent();
 });
 
+// Success Message - form is submitted
+const successElement = successTemplate.cloneNode(true);
+
+const onSuccessCloseKeydown = (evt) => {
+  if (isEscape(evt)) {
+    successElement.parentNode.removeChild(successElement);
+    removeSuccessListeners();
+  }
+};
+
+const onSuccessCloseClick = () => {
+  successElement.parentNode.removeChild(successElement);
+  removeSuccessListeners();
+};
+
 // Form is submitted
 const onSuccess = function() {
-  const successElement = successTemplate.cloneNode(true);
   document.body.appendChild(successElement);
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      successElement.classList.add('hidden');
-    }
-  });
-
-  document.addEventListener('click', () => {
-    successElement.classList.add('hidden');
-  });
+  addSuccessListeners();
   resetComponent();
+};
+
+// Error Message - form isn't submitted
+const errorElement = errorTemplate.cloneNode(true);
+
+const onFailCloseKeydown = (evt) => {
+  if (isEscape(evt)) {
+    errorElement.parentNode.removeChild(errorElement);
+    removeFailListeners();
+  }
+};
+
+const onFailCloseClick = () => {
+  errorElement.parentNode.removeChild(errorElement);
+  removeFailListeners();
 };
 
 // Form isn't submitted
 const onFail = function() {
-  const errorElement = errorTemplate.cloneNode(true);
-  const errorButton = errorElement.querySelector('.error__button');
   document.body.appendChild(errorElement);
-
-  errorButton.addEventListener('click', () => {
-    errorElement.classList.add('hidden');
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      errorElement.classList.add('hidden');
-    }
-  });
-
-  document.addEventListener('click', () => {
-    errorElement.classList.add('hidden');
-  });
+  addFailListeners();
 };
 
 form.addEventListener('submit', (evt) => {
@@ -174,3 +179,5 @@ form.addEventListener('submit', (evt) => {
     new FormData(evt.target),
   );
 });
+
+export {onSuccessCloseKeydown, onSuccessCloseClick, onFailCloseKeydown, onFailCloseClick};

@@ -12,7 +12,6 @@ disableForm(true);
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    disableForm(false);
     address.value = `${TOKYO_LATITUDE.toFixed(5)}, ${TOKYO_LONGITUDE.toFixed(5)}`;
   })
   .setView({
@@ -72,7 +71,15 @@ const showAdverts = function (adverts) {
       .addTo(map)
       .bindPopup(renderAdvert(advert));
   });
+  disableForm(false);
 };
+
+const onFail = () => {
+  showAlert('Ошибка запроса!');
+  disableForm(false);
+};
+
+getData(showAdverts, onFail);
 
 const resetMap = function () {
   map.setView({
@@ -89,7 +96,5 @@ const resetMap = function () {
 
   address.value = `${TOKYO_LATITUDE.toFixed(5)}, ${TOKYO_LONGITUDE.toFixed(5)}`;
 };
-
-getData(showAdverts, () => showAlert('Ошибка запроса!'));
 
 export {resetMap};
