@@ -1,14 +1,16 @@
-import {disableForm} from './form.js';
+import {formStatus} from './form.js';
 import {renderAdvert} from './advert.js';
 import {showAlert} from './utils.js';
 import {getData} from './api.js';
 
 const address = document.querySelector('#address');
 
+const MAP_ZOOM = 13;
 const TOKYO_LATITUDE = 35.68034507280568;
 const TOKYO_LONGITUDE = 139.76785003796047;
+const SIMILAR_ADVERTS_COUNT = 10;
 
-disableForm(true);
+formStatus(true);
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -17,7 +19,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: TOKYO_LATITUDE,
     lng: TOKYO_LONGITUDE,
-  }, 13);
+  }, MAP_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -52,16 +54,15 @@ mainMarker.on('moveend', (evt) => {
 let originalAdverts = [];
 let filteredAdverts = [];
 
-export const getOriginalAdverts = () => originalAdverts;
+const getOriginalAdverts = () => originalAdverts;
 
-export const setFilteredAdverts = (adverts) => {
+const setFilteredAdverts = (adverts) => {
   filteredAdverts = adverts;
-  // console.log(filteredAdverts);
 };
 
 const markersGroup = L.layerGroup().addTo(map);
 
-export const drawAdverts = () => {
+const drawAdverts = () => {
   markersGroup.clearLayers();
   filteredAdverts.forEach((advert) => {
     const icon = L.icon({
@@ -88,14 +89,14 @@ export const drawAdverts = () => {
 
 const showAdverts = function (adverts) {
   originalAdverts = adverts;
-  setFilteredAdverts(originalAdverts.slice(0, 10));
+  setFilteredAdverts(originalAdverts.slice(0, SIMILAR_ADVERTS_COUNT));
   drawAdverts();
-  disableForm(false);
+  formStatus(false);
 };
 
 const onFail = () => {
-  showAlert('Ошибка запроса!');
-  disableForm(false);
+  showAlert('Произошла ошибка. Обновите страницу!');
+  formStatus(false);
 };
 
 getData(showAdverts, onFail);
@@ -104,7 +105,7 @@ const resetMap = function () {
   map.setView({
     lat: TOKYO_LATITUDE,
     lng: TOKYO_LONGITUDE,
-  }, 13);
+  }, MAP_ZOOM);
 
   map.closePopup();
 
@@ -116,4 +117,4 @@ const resetMap = function () {
   address.value = `${TOKYO_LATITUDE.toFixed(5)}, ${TOKYO_LONGITUDE.toFixed(5)}`;
 };
 
-export {resetMap};
+export {getOriginalAdverts, setFilteredAdverts, drawAdverts, resetMap, SIMILAR_ADVERTS_COUNT};

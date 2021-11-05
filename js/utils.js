@@ -1,4 +1,4 @@
-import {onSuccessCloseClick, onSuccessCloseKeydown, onFailCloseKeydown, onFailCloseClick} from './form-validation.js';
+import {onSuccessCloseClick, onSuccessCloseKeydown, onFailCloseKeydown, onFailCloseClick} from './form.js';
 
 const ALERT_SHOW_TIME = 5000;
 
