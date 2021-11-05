@@ -1,16 +1,64 @@
 import {drawAdverts, getOriginalAdverts, setFilteredAdverts} from './map.js';
+
 const mapFilters = document.querySelector('.map__filters');
 const housingTypeFilter = mapFilters.querySelector('#housing-type');
-// const priceFilter = mapFilters.querySelector('#housing-price');
-// const roomsFilter = mapFilters.querySelector('#housing-rooms');
-// const guestsFilter = mapFilters.querySelector('#housing-guests');
-// const featuresFilter = mapFilters.querySelector('#housing-features');
-// const features = featuresFilter.querySelectorAll('[name="features"]');
+const priceFilter = mapFilters.querySelector('#housing-price');
+const roomsFilter = mapFilters.querySelector('#housing-rooms');
+const guestsFilter = mapFilters.querySelector('#housing-guests');
+const featuresFilter = mapFilters.querySelector('#housing-features');
+const features = featuresFilter.querySelectorAll('[name="features"]');
+
 let selectedHousingType;
+let selectedPrice;
+let selectedRooms;
+let selectedGuests;
+let selectedFeatures = [];
 
 const filterSimilarAdverts = () => {
   const filteredAdverts = getOriginalAdverts()
-    .filter((advert) => advert.offer.type === selectedHousingType)
+    .filter((advert) => {
+      if (selectedHousingType && selectedHousingType !== 'any') {
+        return advert.offer.type === selectedHousingType;
+      }
+      return true;
+    })
+    .filter((advert) => {
+      if (selectedPrice && selectedPrice !== 'any') {
+        if (selectedPrice === 'low') {
+          return advert.offer.price < 10000;
+        } else if (selectedPrice === 'middle') {
+          return advert.offer.price >= 10000 && advert.offer.price <= 50000;
+        } else if (selectedPrice === 'high') {
+          return advert.offer.price > 50000;
+        }
+      } else {
+        return true;
+      }
+    })
+    .filter((advert) => {
+      if (selectedRooms && selectedRooms !== 'any') {
+        return advert.offer.rooms === Number(selectedRooms);
+      }
+      return true;
+    })
+    .filter((advert) => {
+      if (selectedGuests && selectedGuests !== 'any' && selectedGuests !== '0') {
+        return advert.offer.guests >= Number(selectedGuests);
+      } else if (selectedGuests === '0') {
+        return advert.offer.rooms === 100;
+      } else {
+        return true;
+      }
+    })
+    .filter ((advert) => {
+      if (selectedFeatures && selectedFeatures.length > 0) {
+        if (advert.offer.features) {
+          return selectedFeatures.every((feature) => advert.offer.features.includes(feature));
+        }
+        return false;
+      }
+      return true;
+    })
     .slice(0, 10);
   setFilteredAdverts(filteredAdverts);
   drawAdverts();
@@ -19,31 +67,32 @@ const filterSimilarAdverts = () => {
 housingTypeFilter.addEventListener('change', () => {
   selectedHousingType = housingTypeFilter.value;
   filterSimilarAdverts();
-  console.log(selectedHousingType);
 });
 
+priceFilter.addEventListener('change', () => {
+  selectedPrice = priceFilter.value;
+  filterSimilarAdverts();
+});
 
-// priceFilter.addEventListener('change', () => {
-//   const selectedPrice = priceFilter.value;
-//   console.log(selectedPrice);
-// });
+roomsFilter.addEventListener('change', () => {
+  selectedRooms = roomsFilter.value;
+  filterSimilarAdverts();
+});
 
-// roomsFilter.addEventListener('change', () => {
-//   const selectedRooms = roomsFilter.value;
-//   console.log(selectedRooms);
-// });
+guestsFilter.addEventListener('change', () => {
+  selectedGuests = guestsFilter.value;
+  filterSimilarAdverts();
 
-// guestsFilter.addEventListener('change', () => {
-//   const selectedGuests = guestsFilter.value;
-//   console.log(selectedGuests);
-// });
+});
 
-// featuresFilter.addEventListener('change', () => {
-//   features.forEach ( (feature) => {
-//     if (feature.checked) {
-//       const selectedFeatures = feature.value;
-//       console.log(selectedFeatures);
-//     }
-//   });
-// });
+featuresFilter.addEventListener('change', () => {
+  const selectedFeaturesArray = [];
+  features.forEach((feature) => {
+    if (feature.checked) {
+      selectedFeaturesArray.push(feature.value);
+    }
+  });
+  selectedFeatures = selectedFeaturesArray;
+  filterSimilarAdverts();
+});
 

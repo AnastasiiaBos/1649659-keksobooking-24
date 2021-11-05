@@ -56,7 +56,7 @@ export const getOriginalAdverts = () => originalAdverts;
 
 export const setFilteredAdverts = (adverts) => {
   filteredAdverts = adverts;
-  console.log(filteredAdverts);
+  // console.log(filteredAdverts);
 };
 
 const markersGroup = L.layerGroup().addTo(map);
