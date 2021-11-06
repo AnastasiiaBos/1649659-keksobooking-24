@@ -1,3 +1,5 @@
+import {onSuccessCloseClick, onSuccessCloseKeydown, onFailCloseKeydown, onFailCloseClick} from './form.js';
+
 const ALERT_SHOW_TIME = 5000;
 
 const showAlert = (message) => {
@@ -22,4 +24,26 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {showAlert};
+const isEscape = (evt) => evt.key === 'Escape';
+
+const removeSuccessListeners = () => {
+  document.removeEventListener('keydown', onSuccessCloseKeydown);
+  document.removeEventListener('click', onSuccessCloseClick);
+};
+
+const addSuccessListeners = () => {
+  document.addEventListener('keydown', onSuccessCloseKeydown);
+  document.addEventListener('click', onSuccessCloseClick);
+};
+
+const removeFailListeners = () => {
+  document.removeEventListener('keydown', onFailCloseKeydown);
+  document.removeEventListener('click', onFailCloseClick);
+};
+
+const addFailListeners = () => {
+  document.addEventListener('keydown', onFailCloseKeydown);
+  document.addEventListener('click', onFailCloseClick);
+};
+
+export {showAlert, removeSuccessListeners, addSuccessListeners, removeFailListeners, addFailListeners, isEscape};

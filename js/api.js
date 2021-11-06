@@ -1,11 +1,8 @@
-
-// import {showAlert} from './utils.js';
-
 const getData = (onSuccess, onFail) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
-    .then((adverts) => {
-      onSuccess(adverts);
+    .then((data) => {
+      onSuccess(data);
     })
     .catch(() => {
       onFail();
