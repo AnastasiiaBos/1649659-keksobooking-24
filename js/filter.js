@@ -7,7 +7,7 @@ const priceFilter = mapFilters.querySelector('#housing-price');
 const roomsFilter = mapFilters.querySelector('#housing-rooms');
 const guestsFilter = mapFilters.querySelector('#housing-guests');
 const featuresFilter = mapFilters.querySelector('#housing-features');
-const features = featuresFilter.querySelectorAll('[name="features"]');
+const features = featuresFilter.querySelectorAll('input[type=checkbox]');
 
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
