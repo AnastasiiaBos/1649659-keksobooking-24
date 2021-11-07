@@ -3,13 +3,12 @@ import {renderAdvert} from './advert.js';
 import {showAlert} from './utils.js';
 import {getData} from './api.js';
 
-const address = document.querySelector('#address');
-
 const MAP_ZOOM = 13;
 const TOKYO_LATITUDE = 35.68034507280568;
 const TOKYO_LONGITUDE = 139.76785003796047;
 const SIMILAR_ADVERTS_COUNT = 10;
 
+const address = document.querySelector('#address');
 formStatus(true);
 
 const map = L.map('map-canvas')

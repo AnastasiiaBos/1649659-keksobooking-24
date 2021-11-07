@@ -1,4 +1,4 @@
-const advertTemplate = document.querySelector('#card').content.querySelector('.popup');
+import {declineNouns} from './utils.js';
 
 const TYPES_OF_HOUSES = {
   palace: 'Дворец',
@@ -7,6 +7,8 @@ const TYPES_OF_HOUSES = {
   bungalow: 'Бунгало',
   hotel: 'Отель',
 };
+
+const advertTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const renderAdvert = function ({author, offer}) {
   const advertElement = advertTemplate.cloneNode(true);
@@ -70,7 +72,7 @@ const renderAdvert = function ({author, offer}) {
   }
 
   if (offer.rooms && offer.guests) {
-    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${declineNouns(offer.rooms, ['комнатa', 'комнаты', 'комнат'])} для ${offer.guests} ${declineNouns(offer.guests, ['гостя', 'гостей', 'гостей'])}`;
   } else {
     hideElement('.popup__text--capacity');
   }

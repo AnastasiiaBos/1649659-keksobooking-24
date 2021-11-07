@@ -1,5 +1,8 @@
+const URL_GET = 'https://24.javascript.pages.academy/keksobooking/data';
+const URL_SEND = 'https://24.javascript.pages.academy/keksobooking';
+
 const getData = (onSuccess, onFail) => {
-  fetch('https://24.javascript.pages.academy/keksobooking/data')
+  fetch(URL_GET)
     .then((response) => response.json())
     .then((data) => {
       onSuccess(data);
@@ -11,7 +14,7 @@ const getData = (onSuccess, onFail) => {
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://24.javascript.pages.academy/keksobooking',
+    URL_SEND,
     {
       method: 'POST',
       body,

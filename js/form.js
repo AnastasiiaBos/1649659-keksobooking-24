@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
 import {resetMap} from './map.js';
+import {resetPhotos} from './avatar.js';
 import {removeSuccessListeners, addSuccessListeners, addFailListeners, removeFailListeners, isEscape} from './utils.js';
 
 const MIN_TITLE_LENGTH = 30;
@@ -121,6 +122,7 @@ submit.addEventListener('click', (evt) => {
 // Reset button
 const resetComponent = function() {
   form.reset();
+  resetPhotos();
   mapFilters.reset();
   resetMap();
 };
